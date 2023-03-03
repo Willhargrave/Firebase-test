@@ -1,11 +1,10 @@
 import React, {useRef, useState} from 'react'
-import './App\.css';
+import './App.css';
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
 import 'firebase/compat/auth'
 import 'firebase/analytics'
-import {initializeApp} from 'firebase/compat/app'
-import { getFirestore, serverTimestamp } from 'firebase/firestore';
+import { serverTimestamp } from 'firebase/firestore';
 import {useAuthState} from 'react-firebase-hooks/auth'
 import {useCollectionData} from 'react-firebase-hooks/firestore'
 
@@ -45,12 +44,7 @@ function SignIn() {
     <button onClick={signInWithGoogle}>Sign in with Google</button>
   )
 }
-  function SignOut() {
-    return auth.currentUser && (
-      <button onClick={() => auth.signOut()}>Sign Out</button>
-    )
-  }
- 
+  
 
 
 function ChatRoom() {
@@ -77,7 +71,7 @@ function ChatRoom() {
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
   return (
-    <>
+    <div>
     <main>
       {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
       <div ref={dummy}></div>
@@ -86,7 +80,7 @@ function ChatRoom() {
       <input value={formValue} onChange={(e) => setFormValue(e.target.value)}/>
       <button type="submit">Go</button>
     </form>
-    </>
+    </div>
   )
 } 
 function ChatMessage(props) {
@@ -95,7 +89,7 @@ function ChatMessage(props) {
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'receieved';
   return  (
   <div className={`message ${messageClass}`}>
-  <img src={photoURL}/>
+  <img src={photoURL ||'https://api.adorable.io/avatars/23/abott@adorable.png'} alt="img"/>
   <p>{text}</p>
   </div>
   )
