@@ -55,8 +55,8 @@ function SignIn() {
 
 function ChatRoom() {
 
-  const dummy = useRef()
-  const messagesRef = firestore.collection('mesages');
+  const dummy = useRef();
+  const messagesRef = firestore.collection('messages');
   const query = messagesRef.orderBy('createdAt').limit(25)
 
   const [messages] = useCollectionData(query, {idField: 'id'})
@@ -83,7 +83,7 @@ function ChatRoom() {
       <div ref={dummy}></div>
     </main>
     <form onSubmit={sendMessage}>
-      <input value={formValue} onChange={(e) =>(e.target.value)}/>
+      <input value={formValue} onChange={(e) => setFormValue(e.target.value)}/>
       <button type="submit">Go</button>
     </form>
     </>
