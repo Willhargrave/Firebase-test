@@ -4,7 +4,8 @@ import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
 import 'firebase/compat/auth'
 import 'firebase/analytics'
-
+import {initializeApp} from 'firebase/compat/app'
+import { getFirestore, serverTimestamp } from 'firebase/firestore';
 import {useAuthState} from 'react-firebase-hooks/auth'
 import {useCollectionData} from 'react-firebase-hooks/firestore'
 
@@ -20,7 +21,7 @@ firebase.initializeApp({
 
 const auth = firebase.auth()
 const firestore = firebase.firestore();
-const analytics = firebase.analytics();
+// const analytics = firebase.analytics();
 function App() {
   const [user] = useAuthState(auth);
   return (
@@ -41,7 +42,7 @@ function SignIn() {
     auth.signInWithPopup(provider);
   }
   return ( 
-    <button onclick={signInWithGoogle}>Sign in with Google</button>
+    <button onClick={signInWithGoogle}>Sign in with Google</button>
   )
 }
   function SignOut() {
@@ -60,21 +61,20 @@ function ChatRoom() {
 
   const [messages] = useCollectionData(query, {idField: 'id'})
   const [formValue, setFormValue] = useState('')
-
+  const timestamp = serverTimestamp();
   const sendMessage = async(e) => {
     e.preventDefault();
     const {uid, photoURL} = auth.currentUser;
 
     await messagesRef.add({
       text: formValue,
-      createdAt: firebase.firestore.FieldValue.serverTimeStamp(),
+      createdAt: timestamp,
       uid,
       photoURL
     });
 
-    setFormValue('')
-
-    dummy.current.scrollIntoView({ behavior: 'smooth'})
+    setFormValue('');
+    dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
   return (
     <>
